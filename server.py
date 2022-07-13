@@ -4,9 +4,9 @@ import db
 app = Flask(__name__)
 app.config['DEBUG']=True
 
-@app.errorhandler(404)
-def not_found(error):
-   return make_response(jsonify({'Status': 404, 'Error': 'Resource not found'}), 404)
+# @app.errorhandler(404)
+# def not_found(error):
+#    return make_response(jsonify({'Status': 404, 'Error': 'Resource not found'}), 404)
 
 ########  ROUTE LISTAR CATEGORIAS
 
@@ -16,9 +16,9 @@ def get_categorias():
     return jsonify(categorias),200
 
 
-@app.route("/solucoes/ategorias<id>",methods=['GET'])
+@app.route("/solucoes/categorias/<id>",methods=['GET'])
 def get_categoria(id):
-    categoria = db.query_db('SELECT * FROM categorias WHERE id = ?', (id,))
+    categoria = db.query_db('SELECT * FROM categorias WHERE id_categoria = ?', (id,))
     return jsonify(categoria),200
     abort(404)
 
@@ -74,7 +74,7 @@ def update_produto(id_produto):
 
 ########  ROUTE DELETAR PRODUTOS
 
-@app.route("/solucoes/categorias/delete<int:id>",methods=['DELETE'])
+@app.route("/solucoes/categorias/delete/<int:id>",methods=['DELETE'])
 def delete_categoria(id_categoria):
     categorias = request.get_json()
     db.query_db(f'DELETE FROM categorias WHERE id_categoria =  {id_categoria}')
@@ -87,7 +87,7 @@ def delete_produto(id_produto):
     return {"Produto Deletado com sucesso!"}, 200 
 
 if __name__ == '__main__':
-    init_db = True
+    init_db = False
     
     db.init_app(app)
     
