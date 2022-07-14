@@ -26,7 +26,7 @@ def insert_categorias(args=()):
     sql = ''' INSERT INTO categorias(nome_categoria,descricao)
               VALUES(?,?) '''
     cur = get_db().cursor()
-    cur.execute('PRAGMA foreiGn_keys=ON') 
+    cur.execute('PRAGMA foreiGn_keys=ON')
     cur.execute(sql, args)
     get_db().commit()
     return cur.lastrowid
@@ -49,7 +49,7 @@ def delete_categorias(id):
 ############# PRODUTOS ################
 
 def insert_produtos(args=()):
-    sql = ''' INSERT INTO produtos(id_produto,codigo_produto,nome_produto,valor_produto,quantidade)
+    sql = ''' INSERT INTO produtos(codigo_produto,nome_produto,valor_produto,quantidade, id_categoria)
               VALUES(?,?,?,?,?) '''
     cur = get_db().cursor()
     cur.execute(sql, args)
@@ -70,6 +70,14 @@ def delete_produtos(id_produto):
     cur.execute(sql, id_produto)
     get_db().commit()
     return cur.lastrowid
+
+def update_produtos(args=()):
+    sql = '''UPDATE produtos SET codigo_produto = ?, nome_produto = ?, valor_produto = ?, quantidade = ?, id_categoria = ? WHERE id = ?'''
+    cur = get_db().cursor()
+    cur.execute(sql, args)
+    get_db().commit()
+    return cur.lastrowid
+
 
 ############# USERS ################
 
