@@ -20,6 +20,7 @@ def get_db():
 
     return g.db
 
+############# CATEGORIAS ################
 
 def insert_categorias(args=()):
     sql = ''' INSERT INTO categorias(nome_categoria,descricao)
@@ -29,11 +30,54 @@ def insert_categorias(args=()):
     get_db().commit()
     return cur.lastrowid
 
+def update_categorias(args=()):
+    sql = ''' UPDATE categorias SET nome_categoria = ?, descricao = ? WHERE id = ? '''
+    cur = get_db().cursor()
+    cur.execute(sql, args)
+    get_db().commit()
+    return cur.lastrowid
+
+def delete_categorias(id):
+    sql = ''' DELETE from categorias WHERE id = ?",     
+                      (id,) '''
+    cur = get_db().cursor()
+    cur.execute(sql, id)
+    get_db().commit()
+    return cur.lastrowid
+
+############# PRODUTOS ################
+
 def insert_produtos(args=()):
     sql = ''' INSERT INTO produtos(id_produto,codigo_produto,nome_produto,valor_produto,quantidade)
               VALUES(?,?,?,?,?) '''
     cur = get_db().cursor()
     cur.execute(sql, args)
+    get_db().commit()
+    return cur.lastrowid
+
+def delete_produtos(id_produto):
+    sql = ''' DELETE from produtos WHERE id_produto = ?",     
+                      (id_produto,) '''
+    cur = get_db().cursor()
+    cur.execute(sql, id_produto)
+    get_db().commit()
+    return cur.lastrowid
+
+############# USERS ################
+
+def insert_users(args=()):
+    sql = ''' INSERT INTO users (nome, email, telefone, endereco,       
+                    cidade) VALUES (?, ?, ?, ?, ?) '''
+    cur = get_db().cursor()
+    cur.execute(sql, args)
+    get_db().commit()
+    return cur.lastrowid
+
+def delete_user(user_id):
+    sql = ''' DELETE from users WHERE user_id = ?",     
+                      (user_id,) '''
+    cur = get_db().cursor()
+    cur.execute(sql, user_id)
     get_db().commit()
     return cur.lastrowid
     

@@ -43,7 +43,7 @@ def add_categorias():
     if request.is_json:
         categorias = request.get_json()
         id = db.insert_categorias((categorias['nome_categoria'],categorias['descricao']))
-        return {"id":id}, 201
+        return {"Cadastrado com sucesso!":id}, 201
     return {"error": "Request must be JSON"}, 415
 
 ########  ROUTE CADASTRAR PRODUTOS
@@ -59,11 +59,11 @@ def add_produtos():
 
 ########  ROUTE EDITAR PRODUTOS
 
-@app.route("/solucoes/categorias_edit/<int:id_categoria>",methods=['PUT'])
-def update_categoria(id_categoria):
+@app.route("/solucoes/categorias_edit/<int:id>",methods=['PUT'])
+def update_categoria(id):
     categorias = request.get_json()
-    db.query_db(f'UPDATE categorias SET nome_categoria = "{categorias["nome_categoria"]}", descricao = "{categorias["descricao"]}" WHERE id_ctegorias = {id_categoria}')
-    return {"error": "not founded"}, 404 
+    db.query_db(f'UPDATE categorias SET nome_categoria = "{categorias["nome_categoria"]}", descricao = "{categorias["descricao"]}" WHERE id_categoria = {id}')
+    return {"Categoria Editada com sucesso!":id}, 201 
 
 @app.route("/solucoes/produtos_edit/<int:id_produto>",methods=['PUT'])
 def update_produto(id_produto):
@@ -75,16 +75,14 @@ def update_produto(id_produto):
 ########  ROUTE DELETAR PRODUTOS
 
 @app.route("/solucoes/categorias/delete/<int:id>",methods=['DELETE'])
-def delete_categoria(id_categoria):
-    categorias = request.get_json()
-    db.query_db(f'DELETE FROM categorias WHERE id_categoria =  {id_categoria}')
-    return {"Categoria Deletado com sucesso!"}, 200  
+def delete_categoria(id):
+    db.query_db(f'DELETE FROM categorias WHERE id_categoria =  {id}')
+    return {"Categoria Deletado com sucesso!":id}, 201  
 
 @app.route("/solucoes/produtos/delete<int:id>",methods=['DELETE'])
-def delete_produto(id_produto):
-    produto = request.get_json()
-    db.query_db(f'DELETE FROM produtos WHERE id_produto =  {id_produto}')
-    return {"Produto Deletado com sucesso!"}, 200 
+def delete_produto(id):
+    db.query_db(f'DELETE FROM produtos WHERE id_produto =  {id}')
+    return {"Categoria Deletado com sucesso!":id}, 201 
 
 if __name__ == '__main__':
     init_db = False
