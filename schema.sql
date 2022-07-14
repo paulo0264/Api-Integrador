@@ -13,5 +13,5 @@ CREATE TABLE produtos (
   nome_produto TEXT NOT NULL,
   valor_produto TEXT NOT NULL,
   quantidade INTEGER NOT NULL,
-  id_categoria INTEGER NOT NULL
+  FOREIGN KEY(id_categoria) REFERENCES categorias(id)
 );
