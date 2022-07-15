@@ -59,6 +59,7 @@ def insert_produtos(args=()):
 def update_produtos(args=()):
     sql = ''' UPDATE produtos SET codigo_produto = ?, nome_produto = ? WHERE id = ? '''
     cur = get_db().cursor()
+    cur.execute('PRAGMA foreiGn_keys=ON')
     cur.execute(sql, args)
     get_db().commit()
     return cur.lastrowid
@@ -78,16 +79,44 @@ def update_produtos(args=()):
     get_db().commit()
     return cur.lastrowid
 
+#############  PEDIDOS ###############
 
-############# USERS ################
+def insert_pedidos(args=()):
+    sql = ''' INSERT INTO pedidos(quant_pedido,valor_pedido,data_pedido)
+              VALUES(?,?,?) '''
+    cur = get_db().cursor()
+    cur.execute('PRAGMA foreiGn_keys=ON')
+    cur.execute(sql, args)
+    get_db().commit()
+    return cur.lastrowid
 
-def insert_users(args=()):
-    sql = ''' INSERT INTO users (nome, email, telefone, endereco,       
-                    cidade) VALUES (?, ?, ?, ?, ?) '''
+def update_pedidos(args=()):
+    sql = ''' UPDATE pedidos SET quant_pedido = ?, valor_pedido = ?, data_pedido WHERE id = ? '''
     cur = get_db().cursor()
     cur.execute(sql, args)
     get_db().commit()
     return cur.lastrowid
+
+
+############ PEDIDO/PRODUTO ##########
+
+def insert_pedido_produto(args=()):
+    sql = ''' INSERT INTO ped_prod(id_pedidos, id_produto)
+              VALUES(?,?) '''
+    cur = get_db().cursor()
+    cur.execute(sql, args)
+    get_db().commit()
+    return cur.lastrowid
+
+############# USERS ################
+
+def insert_users(args=()):
+   sql = ''' INSERT INTO users (nome, email, telefone, endereco,       
+             cidade) VALUES (?, ?, ?, ?, ?) '''
+   cur = get_db().cursor()
+   cur.execute(sql, args)
+   get_db().commit()
+   return cur.lastrowid
 
 def delete_user(user_id):
     sql = ''' DELETE from users WHERE user_id = ?",     

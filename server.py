@@ -1,4 +1,5 @@
 from pickle import TRUE
+from trace import Trace
 from flask import Flask, request, jsonify, abort, make_response
 import db
     
@@ -82,6 +83,51 @@ def delete_produto(id):
     db.query_db(f'DELETE FROM produtos WHERE id_produto =  {id}')
     return {"Produto deletado com sucesso!":id}, 201 
 
+############# Route Pedido ################
+
+@app.route("/solucoes/pedidos",methods=['GET'])
+def get_pedidos():
+    pedidos = db.query_db('SELECT * FROM pedidos')
+    return jsonify(pedidos),200
+
+
+@app.route("/solucoes/pedidos/<id>",methods=['GET'])
+def get_pedido(id):
+    pedido = db.query_db('SELECT * FROM pedidos WHERE id_pedidos = ?', (id,))
+    return jsonify(pedido),200
+    abort(404)
+
+
+@app.route("/solucoes/pedidos",methods=['POST'])
+def add_pedidos():
+    if request.is_json:
+        pedidos = request.get_json()
+        id = db.insert_pedidos((pedidos['quant_pedido'],pedidos['valor_pedido'],pedidos['data_pedido']))
+        return {"id":id}, 201
+    return {"error": "Request must be JSON"}, 415
+
+
+@app.route("/solucoes/pedidos_edit/<int:id_pedidos>",methods=['PUT'])
+def update_pedidosb(id_pedidos):
+    pedidos = request.get_json()
+    db.query_db(f'UPDATE pedidos SET quant_pedido = "{pedidos["quant_pedido"]}", valor_pedido = "{pedidos["valor_pedido"]}", data_pedido = "{pedidos["data_pedido"]}"WHERE id_pedidos = {id_pedidos}')
+    return {"Pedido atualizado atualizado": id_pedidos}, 201
+   
+############# ROUTE PEDIDO/PRODUTO ##############
+
+@app.route("/solucoes/ped_prod",methods=['POST'])
+def add_ped_prod():
+    if request.is_json:
+        ped_prods = request.get_json()
+        id = db.insert_pedido_produto((ped_prods['id_pedidos'], ped_prods['id_produto']))
+        return {"Cadastrado com sucesso!":id}, 201
+    return {"error": "Request must be JSON"}, 415
+
+@app.route("/solucoes/ped_prod",methods=['GET'])
+def get_ped_prod():
+    ped_prods = db.query_db('SELECT * FROM ped_prod')
+    
+    return jsonify(ped_prods),200
 
 
 if __name__ == '__main__':
